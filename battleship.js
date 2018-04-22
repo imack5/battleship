@@ -1,5 +1,5 @@
 var prompt = require("prompt-sync")();
-
+let letterIndex = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
 
 
 let playingPieces = {
@@ -14,40 +14,66 @@ let playingPieces = {
 
 
 let playingField = [
-                [0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0]
-               ];
+                    [0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0]
+                   ];
 
 function placePieces(){
+  function addPiecesToBoard(){
+    //playingField
+  }
 
   for(let piece in playingPieces){
-    let location = prompt(`Please enter ${piece} start location (ie: A2)`);
+
+    let location = prompt(`Please enter ${piece} start location (ie: A2)`).toUpperCase();
     playingPieces[piece].start = location.split('');
-    location = prompt(`Please enter ${piece} end location (ie: A2)`);
+
+    //ADD: Check to see if it is a valid entry
+
+    location = prompt(`Please enter ${piece} end location (ie: A2)`).toUpperCase();
     playingPieces[piece].end = location.split('');
+
+    //ADD: Check to see if it is a valid entry
   }
 }
-
-
-
 
 function printPlayingBoard(field){
   let board = '';
 
-  for(let i = 0; i < field.length; i ++ ){
+  playingField.forEach(function(element){
 
-    for(let j = 0; j < field[i].length; j ++){
-      board += playingField[i][j] + ' ';
-    }
+    element.forEach(function(element){
+      board += element + ' ';
+    });
 
     board += '\n';
-  }
+  });
   console.log(board);
 }
 
-placePieces();
-console.log(playingPieces);
+function parseInput(coordinates){
+  let letterIndex = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+  let returnValue = [];
+
+  letterIndex.forEach(function(element, index){
+    if(coordinates[0] == element){
+     returnValue = [index, Number(coordinates[1])];
+    }
+  });
+
+  return returnValue;
+}
+
+console.log(parseInput(['A', '1']))
+
+//placePieces();
+//console.log(playingPieces);
 printPlayingBoard(playingField);
+
+
+
+
+
