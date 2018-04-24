@@ -4,21 +4,26 @@ let letterIndex = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
 
 let playingPieces = {
 
-  carrier: {id: 'CA', length: 3},
-  //battleship: {id: 'BA', length: 4},
-  //cruiser: {id: 'CR', length: 3},
-  //submarine: {id: 'SU', length 3},
-  //destroyer: {id: 'DE', length: 2}
+  Carrier: {id: 'CA', length: 5},
+  Battleship: {id: 'BA', length: 4},
+  //Cruiser: {id: 'CR', length: 3},
+  //Submarine: {id: 'SU', length 3},
+  //Destroyer: {id: 'DE', length: 2}
 
 };
 
 
 let playingField = [
-                    [0, 0, 0, 0, 0],
-                    [0, 0, 0, 0, 0],
-                    [0, 0, 0, 0, 0],
-                    [0, 0, 0, 0, 0],
-                    [0, 0, 0, 0, 0]
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                    ];
 
 function placePieces(){
@@ -54,19 +59,59 @@ function placePieces(){
     }
   }
 
+
+
+  function checkValidity(piece){
+
+
+    checkDirection = function(piece){
+      let inputCheck = (['R', 'L', 'U', 'D'].indexOf(piece.direction[0]) !== -1);
+
+      console.log(inputCheck);
+      return inputCheck;
+    };
+
+    checkLocation = function(piece){
+      let inputCheck = (letterIndex.indexOf(piece.start[0]) !== -1 && ( piece.start[1] > 0 && piece.start[1] <= 10));
+
+      console.log((inputCheck && piece.start.length === 2))
+      return (inputCheck && piece.start.length === 2);
+    };
+
+    checkPlacement = function(piece){
+
+      return true;
+
+    };
+
+    if(checkDirection(piece) && checkLocation(piece) && checkPlacement(piece)){
+      return true;
+    } else {
+      console.log("That is not a valid entry");
+      return false;
+    }
+  }
+
+
+
+
   for(let piece in playingPieces){
+   let location = '';
+   let direction = '';
 
-    let location = prompt(`Please enter ${piece} start location (ie: A2)`).toUpperCase();
-    playingPieces[piece].start = location.split('');
-    console.log(playingPieces[piece].start)
-    //ADD: Check to see if it is a valid entry
+    while(true){
+      location = prompt(`Please enter ${piece} start location (ie: A2)`).toUpperCase();
+      direction = prompt(`Please enter ${piece} direction (R, L, U, D)`).toUpperCase();
 
-    location = prompt(`Please enter ${piece} direction (R, L, U, D)`).toUpperCase();
-    playingPieces[piece].direction = location;
-    console.log(playingPieces[piece].direction)
-    //ADD: Check to see if it is a valid entry
+      playingPieces[piece].start = location.split('');
+      playingPieces[piece].direction = direction;
 
-    console.log(playingPieces[piece])
+
+      if(checkValidity(playingPieces[piece])){
+        break;
+      }
+    }
+
     addPiecesToBoard(playingPieces[piece]);
   }
 }
@@ -77,7 +122,11 @@ function printPlayingBoard(field){
   playingField.forEach(function(element){
 
     element.forEach(function(element){
-      board += element + '  ';
+      if(element.length == 2){
+        board += element + '  ';
+      } else {
+        board += element + '   ';
+      }
     });
 
     board += '\n';
@@ -89,15 +138,7 @@ function parseInput(coordinates){
 
   let letterIndex = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
   let returnValue = [];
-
-  letterIndex.forEach(function(element, index){
-
-    if(coordinates[0] == element){
-     returnValue = [index, Number(coordinates[1]) - 1];
-
-    }
-  });
-
+  returnValue = [letterIndex.indexOf(coordinates[0]), coordinates[1] - 1];
   return returnValue;
 }
 
