@@ -1,0 +1,19 @@
+{
+  "name": "battleship",
+  "version": "1.0.0",
+  "description": "The game battleshio",
+  "main": "battleship.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imack5/battleship.git"
+  },
+  "author": "Iain MacKenzie",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/imack5/battleship/issues"
+  },
+  "homepage": "https://github.com/imack5/battleship#readme"
+}

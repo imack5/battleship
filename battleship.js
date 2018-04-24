@@ -46,7 +46,6 @@ function placePieces(){
 
         case 'U':
 
-
           playingField[startLocation[0] - i][startLocation[1]] = piece.id;
           break;
 
@@ -66,22 +65,90 @@ function placePieces(){
 
     checkDirection = function(piece){
       let inputCheck = (['R', 'L', 'U', 'D'].indexOf(piece.direction[0]) !== -1);
-
-      console.log(inputCheck);
       return inputCheck;
     };
 
     checkLocation = function(piece){
       let inputCheck = (letterIndex.indexOf(piece.start[0]) !== -1 && ( piece.start[1] > 0 && piece.start[1] <= 10));
-
-      console.log((inputCheck && piece.start.length === 2))
       return (inputCheck && piece.start.length === 2);
     };
 
     checkPlacement = function(piece){
+      let fitsOnBoard = true;
+      let noInterference = true;
 
-      return true;
+      switch(piece.direction){
 
+        case 'R':
+
+          fitsOnBoard = (Number(piece.start[1]) + piece.length - 1) <= 10;
+          break;
+
+        case 'L':
+
+          fitsOnBoard = (Number(piece.start[1]) - piece.length) >= 1;
+          break;
+
+        case 'U':
+
+          fitsOnBoard = (letterIndex.indexOf(piece.start[0]) - piece.length) >= 1;
+          break;
+
+        case 'D':
+
+          fitsOnBoard = (letterIndex.indexOf(piece.start[0]) + piece.length - 1) <= 10;
+          break;
+
+      }
+
+      //Prevents accessing parts of the array that dont exist in the next aspect of the check
+      if(fitsOnBoard === false){
+        return fitsOnBoard;
+      }
+
+      let startLocation = parseInput(piece.start);
+
+      //Checks if the ships interfere with other ships
+      for(let i = 0; i < piece.length; i ++){
+        switch(piece.direction){
+
+          case 'R':
+
+            if(playingField[startLocation[0]][i + startLocation[1]] !== 0){
+              noInterference = false;
+            }
+            break;
+
+          case 'L':
+
+            if(playingField[startLocation[0]][startLocation[1] - i] !== 0){
+              noInterference = false;
+            }
+            break;
+
+          case 'U':
+
+            if(playingField[startLocation[0] - i][startLocation[1]] !== 0){
+              noInterference = false;
+            }
+
+            break;
+
+          case 'D':
+
+            if(playingField[startLocation[0] + i][startLocation[1]] !== 0){
+              noInterference = false;
+            }
+            break;
+
+        }
+
+        if(noInterference === false){
+          break;
+        }
+      }
+
+      return noInterference && fitsOnBoard;
     };
 
     if(checkDirection(piece) && checkLocation(piece) && checkPlacement(piece)){
