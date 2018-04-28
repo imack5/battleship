@@ -49,10 +49,11 @@ let playingFieldAI = [
                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                    ];
 
+let shotsFiredUser = [];
+let shotsFiredAI = [];
+
 //Checks validity of desired entry with three function
 function checkValidity(piece, board){
-
-
   checkDirection = function(piece){
     let inputCheck = (directionIndex.indexOf(piece.direction[0]) !== -1);
     return inputCheck;
@@ -182,8 +183,6 @@ function addPiecesToBoard(piece, inputBoard){
   return board;
 }
 
-
-
 function getPieces(){
 
   for(let piece in playingPieces){
@@ -258,7 +257,57 @@ function populateAIBoard(){
     }
     playingFieldAI = addPiecesToBoard(playingPiecesAI[piece], playingFieldAI);
   }
+}
 
+function takeShot(user){
+
+  checkDirection = function(location){
+    let inputCheck = (letterIndex.indexOf(location) !== -1);
+    return inputCheck;
+  };
+
+  function userShot(){
+    let shotLocation = '';
+
+    while(true){
+      shotLocation = prompt("Enter shot coordinates");
+
+      if(checkDirection(shotLocation[0]) && shotsFiredUser.indexOf(shotLocation) === -1){
+        break;
+      } else {
+        console.log("Must be a valid location");
+      }
+    }
+
+    shotsFiredUser.push(shotLocation);
+    return shotLocation;
+  }
+
+  function shotAI(){
+
+    function getRand(max){
+      let a = Math.floor(Math.random() * max);
+      return a;
+    }
+
+    let tempLocation = ['A', '1'];
+
+    while(true){
+      tempLocation[0] = letterIndex[getRand(10)];
+      tempLocation[1] = Number(getRand(10));
+      if(shotsFiredAI.indexOf(tempLocation.join('')) === -1){
+        break;
+      }
+    }
+    shotsFiredAI.push(tempLocation.join(''));
+    return tempLocation.join('');
+  }
+
+  if(user === 'AI'){
+    return shotAI();
+  } else if(user === 'user') {
+    return userShot();
+  }
 }
 
 
@@ -270,7 +319,20 @@ populateAIBoard();
 
 printPlayingBoard(playingFieldAI);
 
+while(true){
+  let userShot = parseInput(takeShot('user'));
 
+  playingField[userShot[0]][userShot[1]] = 'X';
+
+  printPlayingBoard(playingField);
+
+  let aiShot = parseInput(takeShot('AI'));
+
+  playingFieldAI[aiShot[0]][aiShot[1]] = 'X';
+
+  printPlayingBoard(playingFieldAI);
+
+}
 
 
 
