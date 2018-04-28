@@ -1,0 +1,33 @@
+.container tr td {
+
+  height: 50px;
+  width: 50px;
+  border: 1px solid black;
+
+}
+
+.container tr td:hover{
+
+  /*background: black;*/
+
+}
+
+.colored {
+
+  background: red;
+}
+
+div.pin-location {
+  border-color: black;
+  border-radius: 20px;
+  height: 25px;
+  width: 25px;
+  border-width: 2px;
+  border: solid;
+  margin: auto;
+  background: white;
+}
+
+table {
+  background: lightblue;
+}
